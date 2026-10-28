@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#c2410c">
+  <title>Ándale · Terminal</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; background-color: #0f172a; }
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <iframe id="app-frame" src="" allow="clipboard-read; clipboard-write"></iframe>
+
+  <script>
+    // 1. URL Canónica de tu Apps Script (/exec)
+    const BASE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxsHvNOnplnQKVDjJhdYOa1qvCd3U40tE0IirHxdqrMdNadxz2fIJJU8UYGUHZIpe22/exec';
+
+    // 2. Transfiere parámetros (?cli=... o ?demo=1) al iframe
+    const currentParams = window.location.search;
+    document.getElementById('app-frame').src = BASE_APPS_SCRIPT_URL + currentParams;
+
+    // 3. Registro del Service Worker para habilitar la instalación PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('SW registrado', reg))
+          .catch(err => console.error('Error SW', err));
+      });
+    }
+  </script>
+</body>
+</html>
